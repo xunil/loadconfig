@@ -15,5 +15,10 @@ Usage: loadconfig [options]
     -h, --help                       Display usage message
 </pre>
 
+# References
+Juniper publishes some great material on JunOScript automation, which is invaluable in learning how to use this tool.
+* <a href="http://www.juniper.net/support/xml/junoscript/index.html">JunOScript Documentation</a>
+* <a href="http://www.juniper.net/us/en/community/junos/training-certification/day-one/automation-series/applying-junos-automation/">This Week: Applying JunOS Automation</a>
+* <a href="http://www.juniper.net/us/en/community/junos/training-certification/day-one/automation-series/junos-automation-slax/">This Week: JunOS Automation Reference for SLAX 1.0</a>
 # License
 Released under the MIT license.  See the file LICENSE.
