@@ -1,0 +1,9 @@
+<%
+  elements = XPath.match(@current_config, '//system/host-name')
+  matches = elements[0].text.match(/^([^0-9]+)([0-9]+)(\.\S+)?/)
+  numeric_part = matches[2].to_i
+  reformatted_hostname = "#{matches[1]}%03d#{matches[3]}" % [numeric_part]
+-%>
+system {
+  host-name <%= reformatted_hostname %>
+}
