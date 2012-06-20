@@ -1,4 +1,6 @@
 <%
+  # Reformat the system hostname (e.g. oob-switch01.subdomain) to have a 3-digit number
+  # (e.g. oob-switch001.subdomain) without mangling any other parts of the hostname.
   elements = XPath.match(@current_config, '//system/host-name')
   matches = elements[0].text.match(/^([^0-9]+)([0-9]+)(\.\S+)?/)
   numeric_part = matches[2].to_i
