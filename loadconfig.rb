@@ -62,7 +62,7 @@ module Juniper
     end
   end
 end
-options = {:dryrun => false, :debug => false}
+options = {:dryrun => false, :debug => false, :username => ENV['USER']}
 
 optparse = OptionParser.new do |opts|
   opts.on('-u', '--username=USERNAME', 'Juniper username') do |username|
@@ -105,7 +105,7 @@ end
 
 begin
   optparse.parse!
-  mandatory = [:username, :hostname, :filename]
+  mandatory = [:hostname, :filename]
   missing = mandatory.select {|param| options[param].nil?}
   if not missing.empty?
     puts "Missing required options: #{missing.join(', ')}"
