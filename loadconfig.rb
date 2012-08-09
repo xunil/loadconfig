@@ -14,6 +14,7 @@ module Juniper
       @ssh_opts[:keys] = [options[:ssh_key]] unless options[:ssh_key].nil?
       @ssh_opts[:password] = options[:password] unless options[:password].nil?
       @ssh_opts[:forward_agent] = options[:forward_agent] unless options[:forward_agent].nil?
+      @override = options[:override]
       @dryrun = options[:dryrun]
       @debug = options[:debug]
       @js = Juniper::JUNOScript.new(options[:hostname], options[:username], options = @ssh_opts)
@@ -29,7 +30,7 @@ module Juniper
 
       config_changes = Element.new('load-configuration')
       config_changes.attributes['format'] = 'text'
-      config_changes.attributes['action'] = 'merge'
+      config_changes.attributes['action'] = @override ? 'override' : 'merge'
       config_changes.add_element('configuration-text').text = eruby.evaluate(context)
 
       success, request, reply = commit_config(config_changes, check=@dryrun)
@@ -87,6 +88,10 @@ optparse = OptionParser.new do |opts|
 
   opts.on('-f', '--filename=FILENAME', 'Filename of configuration snippet to load') do |filename|
     options[:filename] = filename
+  end
+
+  opts.on('-o', '--override', 'Override entire existing config') do
+    options[:override] = true
   end
 
   opts.on('-n', '--dryrun', 'Verify configuration commit would succeed but do not commit') do
