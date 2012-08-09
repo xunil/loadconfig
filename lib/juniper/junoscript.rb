@@ -8,7 +8,7 @@ module Juniper
   class JUNOScript
     def initialize(hostname, username, options = {})
       ssh_opts = {}
-      [:keys, :logger, :password].each do |key|
+      [:keys, :logger, :password, :forward_agent].each do |key|
         ssh_opts[key] = options[key] if options.has_key?(key)
       end
       @session = Net::SSH.start(hostname, username, options = ssh_opts)

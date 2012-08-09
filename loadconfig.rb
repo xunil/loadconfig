@@ -13,6 +13,7 @@ module Juniper
       @ssh_opts = {}
       @ssh_opts[:keys] = [options[:ssh_key]] unless options[:ssh_key].nil?
       @ssh_opts[:password] = options[:password] unless options[:password].nil?
+      @ssh_opts[:forward_agent] = options[:forward_agent] unless options[:forward_agent].nil?
       @dryrun = options[:dryrun]
       @debug = options[:debug]
       @js = Juniper::JUNOScript.new(options[:hostname], options[:username], options = @ssh_opts)
@@ -74,6 +75,10 @@ optparse = OptionParser.new do |opts|
 
   opts.on('-k', '--ssh-key=KEYFILE', 'Juniper SSH key filename') do |ssh_key|
     options[:ssh_key] = ssh_key
+  end
+
+  opts.on('-A', '--forward-agent', 'Enable SSH agent forwarding') do
+    options[:forward_agent] = true
   end
 
   opts.on('-H', '--hostname=HOSTNAME', 'Hostname of Juniper device') do |hostname|
