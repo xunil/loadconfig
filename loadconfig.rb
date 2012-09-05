@@ -90,8 +90,8 @@ optparse = OptionParser.new do |opts|
     options[:filename] = filename
   end
 
-  opts.on('-m', '--method=METHOD', 'Specify method: update, replace, merge, override') do |method|
-    raise OptionParser::InvalidOption unless ['update','replace','merge','override'].include?(method.downcase)
+  opts.on('-m', '--method=METHOD', 'Specify method: update, replace, merge, override, set, patch, factory-default') do |method|
+    raise OptionParser::InvalidOption unless ['update','replace','merge','override','set','patch','factory-default'].include?(method.downcase)
     options[:method] = method
   end
 
