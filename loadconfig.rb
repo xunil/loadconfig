@@ -31,7 +31,8 @@ module Juniper
       config_changes = Element.new('load-configuration')
       config_changes.attributes['format'] = 'text'
       config_changes.attributes['action'] = @method
-      config_changes.add_element('configuration-text').text = eruby.evaluate(context)
+      config_tag_name = (@method == 'set' ? 'configuration-set' : 'configuration-text')
+      config_changes.add_element(config_tag_name).text = eruby.evaluate(context)
 
       success, request, reply = commit_config(config_changes, check=@dryrun)
       puts "DEBUG: Request: #{request}" if @debug
