@@ -14,7 +14,7 @@ module Juniper
       @ssh_opts[:keys] = [options[:ssh_key]] unless options[:ssh_key].nil?
       @ssh_opts[:password] = options[:password] unless options[:password].nil?
       @ssh_opts[:forward_agent] = options[:forward_agent] unless options[:forward_agent].nil?
-      @override = options[:override]
+      @action = options[:action]
       @dryrun = options[:dryrun]
       @debug = options[:debug]
       @js = Juniper::JUNOScript.new(options[:hostname], options[:username], options = @ssh_opts)
@@ -30,7 +30,7 @@ module Juniper
 
       config_changes = Element.new('load-configuration')
       config_changes.attributes['format'] = 'text'
-      config_changes.attributes['action'] = @override ? 'override' : 'merge'
+      config_changes.attributes['action'] = @action
       config_changes.add_element('configuration-text').text = eruby.evaluate(context)
 
       success, request, reply = commit_config(config_changes, check=@dryrun)
@@ -63,7 +63,7 @@ module Juniper
     end
   end
 end
-options = {:dryrun => false, :debug => false, :username => ENV['USER']}
+options = {:dryrun => false, :debug => false, :username => ENV['USER'], :action => 'merge'}
 
 optparse = OptionParser.new do |opts|
   opts.on('-u', '--username=USERNAME', 'Juniper username') do |username|
@@ -91,7 +91,11 @@ optparse = OptionParser.new do |opts|
   end
 
   opts.on('-o', '--override', 'Override entire existing config') do
-    options[:override] = true
+    options[:action] = 'override'
+  end
+
+  opts.on('-U', '--update', 'Update existing config (conflicts prefer loaded config)') do
+    options[:action] = 'update'
   end
 
   opts.on('-n', '--dryrun', 'Verify configuration commit would succeed but do not commit') do
